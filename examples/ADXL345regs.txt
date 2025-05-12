@@ -1,0 +1,52 @@
+Register 0x32 to Register 0x37—DATAX0, DATAX1, DATAY0, DATAY1, DATAZ0, DATAZ1 (Read Only)
+These six bytes (Register 0x32 to Register 0x37) are eight bits each and hold the output data for each axis.
+Register 0x32 and Register 0x33 hold the output data for the x-axis, Register 0x34 and Register 0x35 hold the output data for the y-axis, and Register 0x36 and Register 0x37 hold the output data for the z-axis. 
+The output data is twos complement, with DATAx0 as the least significant byte and DATAx1 as the most significant byte, where x represent X, Y, or Z. 
+The DATA_FORMAT register (Address 0x31) controls the format of the data. 
+It is recommended that a multiple-byte read of all registers be performed to prevent a change in data between reads of sequential registers.
+
+
+Register 0x31—DATA_FORMAT (Read/Write)
+Table 34. Register 0x31
+D7 D6 D5 D4 D3 D2 D1 D0
+SELF_TEST SPI INT_INVERT 0 FULL_RES Justify Range
+
+The DATA_FORMAT register controls the presentation of data to Register 0x32 through Register 0x37.
+All data, except that for the ±16 g range, must be clipped to avoid rollover.
+
+SELF_TEST Bit
+A setting of 1 in the SELF_TEST bit applies a self-test force to the sensor, causing a shift in the output data. 
+A value of 0 disables the self-test force.
+
+SPI Bit
+A value of 1 in the SPI bit sets the device to 3-wire SPI mode, and a value of 0 sets the device to 4-wire SPI mode.
+
+INT_INVERT Bit
+A value of 0 in the INT_INVERT bit sets the interrupts to active high, and a value of 1 sets the interrupts to active low.
+
+FULL_RES Bit
+When this bit is set to a value of 1, the device is in full resolution mode, where the output resolution increases with the g range set by the range bits to maintain a 4 mg/LSB scale factor. When the FULL_RES bit is set to 0, the device is in 10-bit mode, and the range bits determine the maximum g range and scale factor. 
+
+Justify Bit
+A setting of 1 in the justify bit selects left-justified (MSB) mode, and a setting of 0 selects right-justified mode with sign extension.
+
+Range Bits
+These bits set the g range.
+0 0 ±2 g
+0 1 ±4 g
+1 0 ±8 g
+1 1 ±16 g
+
+________
+Further study of the data sheet shows:-
+When the FULL_RES bit is set to 0, the device is in 10-bit mode, and the range bits determine the maximum g range and scale factor.
+
+Register 0x32 to Register 0x37 (DATAX0-DATAZ1)
+These … are eight bits each and hold the output data for each axis.
+The output data is twos complement. 
+
+Register 0x31 (DATA_FORMAT)
+When the FULL_RES bit is … 0, the device is in 10-bit mode
+
+This implies 2**10 // 4 i.e. 256 is the divisor needed to convert the integral value to a g value.    # acceleration conversion factor (10-bit resolution ±2g) 
+This implies that the 10 bit value represents 4g so each bit corresponds to g//256
