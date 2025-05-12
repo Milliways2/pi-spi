@@ -3,7 +3,7 @@ pi-spi is a SPI C library for Raspberry Pi using the SPI kernel driver.
 
 Overlays
 ========
-Includes python overlay.
+Includes python overlay.  
 This is available with `include pi_spi`.
 
 Documentation
